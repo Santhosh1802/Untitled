@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import process from "process";
 dotenv.config();
 
+mongoose.set("runValidators", true);
+
 async function connectDB() {
   const MONGO_URI = process.env.MONGO_URI;
   console.log("Connecting to DB...");

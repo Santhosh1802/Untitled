@@ -21,7 +21,7 @@ const BlogSchema = new mongoose.Schema(
       type: String,
       required: true,
       minLength: [20, "blog_content should contain at-least 20 characters."],
-      maxLength: [1000000, "blog_content cannot exceed 10000000 characters."],
+      maxLength: [1000000, "blog_content cannot exceed 1000000 characters."],
     },
     blog_status: {
       type: String,
@@ -29,14 +29,25 @@ const BlogSchema = new mongoose.Schema(
       default: "draft",
     },
     blog_category_tags: {
-      type: [String],
+      type: [
+        {
+          type: String,
+          minLength: 2,
+          maxLength: 30,
+        },
+      ],
       required: true,
-      minLength: [1, "blog_category_tags must be at-least 1."],
-      maxLength: [20, "blog_category_tags cannot exceed 20."],
+      validate: {
+        validator: function (arr) {
+          return arr.length >= 1 && arr.length <= 20;
+        },
+        message: "blog_category_tags must contain between 1 and 20 tags.",
+      },
     },
     blog_created_by: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
     read_count: {
       type: Number,
@@ -44,8 +55,14 @@ const BlogSchema = new mongoose.Schema(
     },
     visibility_rule: {
       type: [String],
-      enum: ["free", "silver", "gold"],
+      enum: ["free", "silver", "gold", "all"],
     },
+    comments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
   },
   { timestamps: true }
 );

@@ -2,10 +2,17 @@ import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema(
   {
-    name: {
+    user_name: {
       type: String,
       required: [true, "name is required."],
-      unique: [true, "name must be unique."],
+      unique: true,
+      minLength: [3, "name minimum length is 3."],
+      maxLength: [20, "name maximum length is 20"],
+      match: [/^[a-zA-Z\\s]+$/, "name should not contain special characters"],
+    },
+    display_name: {
+      type: String,
+      required: [true, "name is required."],
       minLength: [3, "name minimum length is 3."],
       maxLength: [20, "name maximum length is 20"],
       match: [/^[a-zA-Z\\s]+$/, "name should not contain special characters"],
@@ -19,6 +26,12 @@ const UserSchema = new mongoose.Schema(
         "Invalid email",
       ],
     },
+    password: {
+      type: String,
+      required: true,
+      minLength: [8, "Password must contain at-least 8 characters"],
+      maxLength: [20, "Password cannot exceed 20 characters."],
+    },
     role: {
       type: String,
       enum: ["reader", "admin", "creator", "verified creator"],
@@ -29,18 +42,23 @@ const UserSchema = new mongoose.Schema(
       enum: ["normal", "google", "microsoft", "github"],
       required: true,
     },
-    dob:{
-      type:Date,
-      required:true,
+    profile_photo: {
+      type: String,
+      maxLength: [500, "Profile photo cannot exceed 500 characters."],
+      default: "",
     },
-    country:{
-      type:String,
-      required:true,
+    dob: {
+      type: Date,
+      required: true,
     },
-    preferred_language:{
-      type:[String],
-      required:true,
-      default:["english"],
+    country: {
+      type: String,
+      maxLength: [25, "Country cannot exceed 25 characters."],
+      required: true,
+    },
+    preferred_language: {
+      type: [String],
+      default: ["english"],
     },
     last_login_time: {
       type: Date,
@@ -48,11 +66,14 @@ const UserSchema = new mongoose.Schema(
     },
     last_login_device: {
       type: String,
+      maxLength: [20, "last login device cannot exceed 20 characters."],
       required: false,
     },
     last_login_ip: {
       type: String,
+      maxLength: [45, "last login ip cannot exceed 45 characters."],
       required: false,
+      default: "localhost",
     },
     color_theme: {
       type: String,
