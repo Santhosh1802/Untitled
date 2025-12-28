@@ -21,31 +21,60 @@ const UserSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["user", "admin"],
-      default: "user",
+      enum: ["reader", "admin", "creator", "verified creator"],
+      default: "reader",
     },
-    account_type:{
-        type:String,
-        enum:["normal","google","microsoft","github"],
-        required:true,
+    account_type: {
+      type: String,
+      enum: ["normal", "google", "microsoft", "github"],
+      required: true,
     },
-    last_login_time:{
-        type:Date,
-        required:false,
+    dob:{
+      type:Date,
+      required:true,
     },
-    last_login_device:{
-        type:String,
-        required:false,
+    country:{
+      type:String,
+      required:true,
     },
-    last_login_ip:{
-        type:String,
-        required:false,
+    preferred_language:{
+      type:[String],
+      required:true,
+      default:["english"],
     },
-    color_theme:{
-        type:String,
-        enum:["light","dark","system"],
-        default:"light",
-    }
+    last_login_time: {
+      type: Date,
+      required: false,
+    },
+    last_login_device: {
+      type: String,
+      required: false,
+    },
+    last_login_ip: {
+      type: String,
+      required: false,
+    },
+    color_theme: {
+      type: String,
+      enum: ["light", "dark", "system"],
+      default: "light",
+    },
+    password_reset_token: {
+      type: String,
+      required: false,
+    },
+    last_password_reset_time: {
+      type: Date,
+      required: false,
+    },
+    subscription_status: {
+      type: Boolean,
+      default: false,
+    },
+    is_blocked: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
