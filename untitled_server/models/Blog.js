@@ -54,8 +54,8 @@ const BlogSchema = new mongoose.Schema(
       default: 0,
     },
     visibility_rule: {
-      type: [String],
-      enum: ["free", "silver", "gold", "all"],
+      type: String,
+      enum: ["free", "silver", "gold"]
     },
     comments: [
       {
